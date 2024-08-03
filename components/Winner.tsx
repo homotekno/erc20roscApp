@@ -27,7 +27,7 @@ export const Winner = () => {
     const { data: winnerforRound } = useReadContract({
         contract: roscContract,
         method: "winnerforRound",
-        params: [currentRound],
+        params: [currentRound ? currentRound : BigInt(0)],
         queryOptions: {
             enabled: !!currentRound
         }
@@ -36,7 +36,7 @@ export const Winner = () => {
     const { data: highestBidforRound } = useReadContract({
         contract: roscContract,
         method: "highestBidforRound",
-        params: [currentRound],
+        params: [currentRound ? currentRound : BigInt(0)],
         queryOptions: {
             enabled: !!currentRound
         }
@@ -45,7 +45,7 @@ export const Winner = () => {
     const { data: dividendAmountforRound } = useReadContract({
         contract: roscContract,
         method: "dividendAmountforRound",
-        params: [currentRound],
+        params: [currentRound ? currentRound : BigInt(0)],
         queryOptions: {
             enabled: !!currentRound
         }
@@ -54,7 +54,7 @@ export const Winner = () => {
     const { data: defaultersForRound } = useReadContract({
         contract: roscContract,
         method: "defaultersForRound",
-        params: [currentRound],
+        params: [currentRound ? currentRound : BigInt(0)],
         queryOptions: {
             enabled: !!currentRound
         }
@@ -63,7 +63,7 @@ export const Winner = () => {
     const { data: collateralDividendforRound } = useReadContract({
         contract: roscContract,
         method: "collateralDividendforRound",
-        params: [currentRound],
+        params: [currentRound ? currentRound : BigInt(0)],
         queryOptions: {
             enabled: !!currentRound
         }
@@ -72,7 +72,7 @@ export const Winner = () => {
     const { data: winningPotforRound } = useReadContract({
         contract: roscContract,
         method: "winningPotforRound",
-        params: [currentRound],
+        params: [currentRound ? currentRound : BigInt(0)],
         queryOptions: {
             enabled: !!currentRound
         }
@@ -81,7 +81,7 @@ export const Winner = () => {
     const { data: winningSlashforRound } = useReadContract({
         contract: roscContract,
         method: "winningSlashforRound",
-        params: [currentRound],
+        params: [currentRound ? currentRound : BigInt(0)],
         queryOptions: {
             enabled: !!currentRound
         }
@@ -90,7 +90,7 @@ export const Winner = () => {
     const { data: potWithdrawnforRound } = useReadContract({
         contract: roscContract,
         method: "potWithdrawnforRound",
-        params: [currentRound],
+        params: [currentRound ? currentRound : BigInt(0)],
         queryOptions: {
             enabled: !!currentRound
         }
@@ -99,7 +99,7 @@ export const Winner = () => {
     const { data: userName } = useReadContract({
         contract: roscContract,
         method: "userName",
-        params: [winnerforRound],
+        params: [winnerforRound ? winnerforRound : "0"],
         queryOptions: {
             enabled: !!winnerforRound,
         }
@@ -133,24 +133,19 @@ export const Winner = () => {
                         <p style={{marginTop: "20px", color: "green", marginBottom: "20px"}}>You win mfer</p>
                         { potWithdrawnforRound ? (
                             <div>
-                                <TransactionButton style={{backgroundColor: "green", color: "white"}}
-                                >Withdrawn ✅</TransactionButton>
+                                <button style={{backgroundColor: "green", color: "white"}}
+                                >Withdrawn ✅</button>
                             </div>
                         ) : (
                             <div>
                                 <TransactionButton style={{backgroundColor: "blue", color: "white"}}
-                                    transaction={ async () => {
-                                        try {
-                                            const tx = await prepareContractCall({
-                                                contract : roscContract,
-                                                method : "winnerWithdraw"
-                                            });
-                                            return tx;
-                                        } catch (error) {
-                                            console.error("Something went wrong !!", error);
-                                        }
-                                    }}
-                                    onTransactionConfirmed={ () => alert("Success!!")}
+                                    transaction={ () => (
+                                        prepareContractCall({
+                                            contract : roscContract,
+                                            method : "winnerWithdraw"
+                                        })
+                                    )}
+                                    onTransactionConfirmed={() => alert("Success!!")}
                                 >Withdraw</TransactionButton>
                             </div>
                         )}

@@ -9,7 +9,7 @@ export const Bid = () => {
     const account = useActiveAccount();
     const walletAddress = account ? account.address : "";
 
-    const [bid, setBid] = useState(2);
+    const [bid, setBid] = useState<number>(2);
 
     const { data: currentRound } = useReadContract({
         contract: roscContract,
@@ -19,7 +19,7 @@ export const Bid = () => {
     const { data: hasPaid } = useReadContract({
         contract: roscContract,
         method: "hasPaidRound",
-        params: [currentRound, walletAddress],
+        params: [currentRound ?? BigInt(0), walletAddress ?? ""],
         queryOptions: {
             enabled: !!currentRound,
         },
@@ -28,7 +28,7 @@ export const Bid = () => {
     const { data: hasWon } = useReadContract({
         contract: roscContract,
         method: "hasWon",
-        params: [walletAddress],
+        params: [walletAddress ?? ""],
         queryOptions: {
             enabled: !!currentRound,
         },
@@ -41,7 +41,7 @@ export const Bid = () => {
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                     <input
                         type="number"
-                        value={bid || 2}
+                        value={bid}
                         onChange={(e) => setBid(Number(e.target.value))}
                         placeholder="2% to 21%"
                         style={{
@@ -65,7 +65,7 @@ export const Bid = () => {
                             return prepareContractCall({
                                 contract: roscContract,
                                 method: "bidROSCRound",
-                                params: [bid]
+                                params: [BigInt(bid)]
                             });
                         }}
                         onTransactionConfirmed={() => alert("Success!!")}
@@ -80,10 +80,10 @@ export const Bid = () => {
             <div style={{ width: "150px" }}>
                 <h4 style={{ color: "green" }}>Bids</h4>
                 <p style={{ wordWrap: "break-word", marginTop: "25px", color: "orange" }}>
-                    Finish the payment to submit your bid !!      
+                    Finish the payment to submit your bid !!
                 </p>
                 <p style={{ wordWrap: "break-word", marginTop: "15px", color: "orange" }}>
-                    Previous winners cannot bid again !!      
+                    Previous winners cannot bid again !!
                 </p>
             </div>
         );

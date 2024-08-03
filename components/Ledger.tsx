@@ -3,9 +3,9 @@
 type TableProps = {
     numUsers: number;
     numRounds: number;
-  };
+};
 
-const Ledger = ({ numUsers, numRounds }) => {
+const Ledger: React.FC<TableProps> = ({ numUsers, numRounds }) => {
   const users = Array.from({ length: numUsers }, (_, i) => `User ${i + 1}`);
   const rounds = Array.from({ length: numRounds }, (_, i) => `Round ${i + 1}`);
 
@@ -36,18 +36,3 @@ const Ledger = ({ numUsers, numRounds }) => {
 };
 
 export default Ledger;
-
-
-
-// 'use client';
-
-// import { useActiveAccount, useReadContract } from "thirdweb/react"
-
-// export const Ledger = () => {
-//     const account = useActiveAccount();
-    
-//     const { data : Users } = useReadContract({
-
-//     });
-// }
-
