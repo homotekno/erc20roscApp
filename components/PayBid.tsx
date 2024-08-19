@@ -22,6 +22,15 @@ export const PayBid: React.FC = () => {
         }
     });
 
+    const { data: userFiatBalance } = useReadContract({
+        contract: erc20FiatContract,
+        method: "balanceOf",
+        params: [walletAddress],
+        queryOptions: {
+            enabled: !!account
+        }
+    });
+
     const { data: currentRound } = useReadContract({
         contract: roscContract,
         method: "currentRound",
@@ -150,6 +159,9 @@ export const PayBid: React.FC = () => {
                     <p style={{ color: "green" }}>{userName}'s account :</p>
                     <p style={{ color: "grey" }}>🔒 Collateral: ${truncate(userCollateralStr, 4)} Ξ</p>
                     <p style={{ color: "grey" }}>💰 Deposits: ${truncate(userDepositsStr, 2)} rUSD</p>
+                    <p style={{ color: "grey" }}>
+                        ⚖️ : {userFiatBalance ? `${toEther(userFiatBalance).toString()} rUSD` : "Loading..."}
+                    </p>
                 </div>
                 <h3 style={{ marginTop: "20px", color: "green" }}>
                     ROUND : {currentRoundStr} / {slots?.toString() || "0"}
