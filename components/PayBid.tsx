@@ -145,6 +145,7 @@ export const PayBid: React.FC = () => {
 
     if (isUser) {
         const currentRoundStr = currentRound?.toString() || "0";
+        const slotsStr = slots?.toString() || "0";
         const instalmentAmountStr = instalmentAmount ? toEther(instalmentAmount).toString() : "0";
         const userDepositsStr = userDeposits ? toEther(userDeposits).toString() : "0";
         const totalPotforRoundStr = totalPotforRound ? toEther(totalPotforRound).toString() : "0";
@@ -222,7 +223,7 @@ export const PayBid: React.FC = () => {
                             prepareContractCall({
                                 contract: erc20FiatContract,
                                 method: "approve",
-                                params: [roscContract.address, BigInt((parseFloat(instalmentAmountStr) * (1)) * 10**18)]
+                                params: [roscContract.address, BigInt((parseFloat(instalmentAmountStr) * parseInt(slotsStr)) * 10**18)]
                             })
                         )}
                         onTransactionConfirmed={() => alert("Success!!")}
